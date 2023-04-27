@@ -1,0 +1,22 @@
+.button-active {
+  width: 150px;
+  border: 1px solid #3ea8fe;
+  text-align: center;
+  color: #3ea8fe;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-inactive {
+  width: 150px;
+  border: 1px solid gainsboro;
+  text-align: center;
+  /* color: #3ea8fe; */
+  border-radius: 5px;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #3ea8fe;
+  color: #fff;
+}
