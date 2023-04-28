@@ -1,6 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { timeAgo } from '../utils/utils';
-import { Response } from '../../App';
+import { OptionsButtons, Response } from '../../App';
+import { useAppContext } from '../Context/AppContext/AppContext';
+
 const resultCardStyle = {
   border: '1px solid black',
   borderRadius: '10px',
@@ -10,14 +12,47 @@ const resultCardStyle = {
 
 interface ResultItemProps {
   result: Response;
+  option: OptionsButtons;
 }
-const ResultItem: FC<ResultItemProps> = ({ result }) => {
+const ResultItem: FC<ResultItemProps> = ({ result, option }) => {
   const [favorite, setFavorite] = useState<boolean>(false);
+  const { state, dispatch } = useAppContext();
+  const prevFavorites = useRef(state.favorites);
+
+  const isFavorite = state.favorites.find(favorite => favorite.objectID === result.objectID);
 
   const handleFavorite = () => {
+    if (option === 'My faves' || isFavorite) {
+      dispatch({
+        type: 'DELETE_FAVORITE',
+        payload: result,
+      });
+    }
+
+    if (option === 'All' && !isFavorite) {
+      console.log('add');
+      dispatch({
+        type: 'ADD_FAVORITE',
+        payload: result,
+      });
+    }
+
     setFavorite(!favorite);
   };
 
+  useEffect(() => {
+    if (prevFavorites.current !== state.favorites) {
+      localStorage.setItem('favorites', JSON.stringify(state.favorites));
+      prevFavorites.current = state.favorites;
+    }
+  }, [state.favorites]);
+
+  // useEffect(() => {
+  //   const storedFavorites = localStorage.getItem('favorites');
+  //   if (storedFavorites) {
+  //     dispatch({ type: 'ADD_FAVORITE', payload: JSON.parse(storedFavorites) });
+  //   }
+  // }, [dispatch]);
   return (
     <div style={resultCardStyle}>
       <div
@@ -52,7 +87,7 @@ const ResultItem: FC<ResultItemProps> = ({ result }) => {
         }}
         onClick={() => handleFavorite()}>
         <img
-          src={favorite ? '/icons/heart.svg' : '/icons/heartemp.svg'}
+          src={option === 'My faves' || isFavorite ? '/icons/heart.svg' : '/icons/heartemp.svg'}
           alt='hearth'
           width='40px'
           height='40px'

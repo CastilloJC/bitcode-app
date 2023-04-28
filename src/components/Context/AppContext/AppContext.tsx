@@ -1,15 +1,30 @@
 import React, { createContext, useReducer, useContext, Dispatch, ReactNode } from 'react';
+import { Response } from '../../../App';
 
 interface AppContextProps {
   children: ReactNode;
 }
 
 type AppState = {
-  // Aquí puedes definir el estado inicial de tu aplicación
-  count: number;
+  favorites: Response[];
 };
 
-type Action = { type: 'INCREMENT_COUNT' } | { type: 'DECREMENT_COUNT' } | { type: 'RESET_COUNT' };
+interface AddFavoriteAction {
+  type: 'ADD_FAVORITE';
+  payload: Response;
+}
+
+interface DeleteFavoriteAction {
+  type: 'DELETE_FAVORITE';
+  payload: Response;
+}
+
+interface AddAllFavoritesAction {
+  type: 'ADD_ALL_FAVORITES';
+  payload: Response[];
+}
+
+type Action = AddFavoriteAction | DeleteFavoriteAction | AddAllFavoritesAction;
 
 type AppContextType = {
   state: AppState;
@@ -17,19 +32,29 @@ type AppContextType = {
 };
 
 const initialState: AppState = {
-  count: 0,
+  favorites: [],
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const appReducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
-    case 'INCREMENT_COUNT':
-      return { ...state, count: state.count + 1 };
-    case 'DECREMENT_COUNT':
-      return { ...state, count: state.count - 1 };
-    case 'RESET_COUNT':
-      return { ...state, count: 0 };
+    case 'ADD_FAVORITE':
+      return {
+        ...state,
+        favorites: [...state.favorites, action.payload],
+      };
+    case 'DELETE_FAVORITE':
+      return {
+        ...state,
+        favorites: state.favorites.filter(
+          favorite => favorite.objectID !== action.payload.objectID
+        ),
+      };
+    case 'ADD_ALL_FAVORITES':
+      return {
+        favorites: action.payload,
+      };
     default:
       return state;
   }

@@ -6,6 +6,7 @@ import SelectWithOptions from './components/Select/SelectWithOptions';
 import Results from './components/Results/Results';
 import Pagination from './components/Pagination/Pagination';
 import axios from 'axios';
+import { useAppContext } from './components/Context/AppContext/AppContext';
 
 export type OptionsButtons = 'All' | 'My faves';
 export type OptionsToSelect = 'angular' | 'reactjs' | 'vuejs' | '';
@@ -14,6 +15,7 @@ export interface Response {
   created_at: string;
   story_title: string;
   story_url: string;
+  objectID: string;
 }
 
 function App() {
@@ -22,6 +24,9 @@ function App() {
   const [selectedOption, setSelectedOption] = useState<OptionsToSelect>('');
   const [totalPages, setTotalPages] = useState(0);
   const [results, setResults] = useState<Response[]>([]);
+  const { state, dispatch } = useAppContext();
+
+  console.log(state.favorites);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,10 +34,22 @@ function App() {
         const response = await axios.get(
           `https://hn.algolia.com/api/v1/search_by_date?query=${selectedOption}&page=${page}&hitsPerPage=10`
         );
-        const filteredResults = response.data.hits.filter(
-          (result: Response) =>
-            result.author && result.created_at && result.story_title && result.story_url
-        );
+        const filteredResults = response.data.hits
+          .filter(
+            (result: Response) =>
+              result.author &&
+              result.created_at &&
+              result.story_title &&
+              result.story_url &&
+              result.objectID
+          )
+          .map((result: Response) => ({
+            author: result.author,
+            created_at: result.created_at,
+            story_title: result.story_title,
+            story_url: result.story_url,
+            objectID: result.objectID,
+          }));
 
         setResults(filteredResults);
 
@@ -61,6 +78,13 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    const storedFavorites = localStorage.getItem('favorites');
+    if (storedFavorites) {
+      dispatch({ type: 'ADD_ALL_FAVORITES', payload: JSON.parse(storedFavorites) });
+    }
+  }, [dispatch]);
+
   return (
     <>
       <Header />
@@ -69,12 +93,13 @@ function App() {
         {activeOption === 'All' && (
           <div>
             <SelectWithOptions setOptionSelect={setSelectedOption} />
-            <Results results={results} />
+            <Results results={results} option={activeOption} />
             {selectedOption && (
               <Pagination totalPages={totalPages} currentlyPage={page} setPage={setPage} />
             )}
           </div>
         )}
+        {activeOption === 'My faves' && <Results results={state.favorites} option={activeOption} />}
       </div>
     </>
   );

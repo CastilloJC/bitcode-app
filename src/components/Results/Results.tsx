@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
-import { Response } from '../../App';
+import { OptionsButtons, Response } from '../../App';
 import ResultItem from './ResultItem';
 
 interface ResultsProps {
   results: Response[];
+  option: OptionsButtons;
 }
-const Results: FC<ResultsProps> = ({ results }) => {
+const Results: FC<ResultsProps> = ({ results, option }) => {
   return (
     <div>
-      {/* Results */}
       <div
         style={{
           display: 'grid',
@@ -17,7 +17,7 @@ const Results: FC<ResultsProps> = ({ results }) => {
           marginTop: '20px',
         }}>
         {results.map((result, id) => (
-          <ResultItem key={id} result={result} />
+          <ResultItem key={id} result={result} option={option} />
         ))}
       </div>
     </div>
