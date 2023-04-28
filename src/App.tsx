@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/Header/Header';
 import SwitchButton from './components/SwitchButton/SwitchButton';
 import SelectWithOptions from './components/Select/SelectWithOptions';
+import Results from './components/Results/Results';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <div className='container'>
         <SwitchButton />
         <SelectWithOptions />
+        <Results />
       </div>
     </>
   );
