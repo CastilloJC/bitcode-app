@@ -26,8 +26,6 @@ function App() {
   const [results, setResults] = useState<Response[]>([]);
   const { state, dispatch } = useAppContext();
 
-  console.log(state.favorites);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,7 +70,7 @@ function App() {
   useLayoutEffect(() => {
     const storedOption = localStorage.getItem('selectedOption');
     const valueOption = storedOption ? JSON.parse(storedOption).value : '';
-    console.log(storedOption);
+
     if (storedOption) {
       setSelectedOption(valueOption);
     }

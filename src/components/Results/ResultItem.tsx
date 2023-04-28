@@ -47,12 +47,6 @@ const ResultItem: FC<ResultItemProps> = ({ result, option }) => {
     }
   }, [state.favorites]);
 
-  // useEffect(() => {
-  //   const storedFavorites = localStorage.getItem('favorites');
-  //   if (storedFavorites) {
-  //     dispatch({ type: 'ADD_FAVORITE', payload: JSON.parse(storedFavorites) });
-  //   }
-  // }, [dispatch]);
   return (
     <div style={resultCardStyle}>
       <div
