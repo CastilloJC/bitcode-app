@@ -1,14 +1,9 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { timeAgo } from '../utils/utils';
-import { OptionsButtons, Response } from '../../App';
-import { useAppContext } from '../Context/AppContext/AppContext';
 
-const resultCardStyle = {
-  border: '1px solid black',
-  borderRadius: '10px',
-  display: 'flex',
-  cursor: 'pointer',
-};
+import './ResultItem.css';
+import { OptionsButtons, Response } from '../../../App';
+import { useAppContext } from '../../Context/AppContext/AppContext';
+import { timeAgo } from '../../utils/utils';
 
 interface ResultItemProps {
   result: Response;
@@ -48,13 +43,14 @@ const ResultItem: FC<ResultItemProps> = ({ result, option }) => {
   }, [state.favorites]);
 
   return (
-    <div style={resultCardStyle}>
+    <div className='result-item'>
       <div
         style={{
           width: '80%',
           padding: '15px',
           maxHeight: '80px',
-        }}>
+        }}
+        onClick={() => window.open(result.story_url)}>
         <div
           style={{
             display: 'flex',
@@ -69,17 +65,7 @@ const ResultItem: FC<ResultItemProps> = ({ result, option }) => {
         <h4>{result.story_title}</h4>
       </div>
 
-      <div
-        style={{
-          width: '20%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: '#F4F4F4',
-          borderTopRightRadius: '10px',
-          borderBottomRightRadius: '10px',
-        }}
-        onClick={() => handleFavorite()}>
+      <div className='box-heart' onClick={() => handleFavorite()}>
         <img
           src={option === 'My faves' || isFavorite ? '/icons/heart.svg' : '/icons/heartemp.svg'}
           alt='hearth'

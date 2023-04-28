@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import './Pagination.css';
 
 interface PaginationProps {
   totalPages: number;
@@ -19,14 +20,7 @@ const Pagination: FC<PaginationProps> = ({ totalPages, currentlyPage, setPage })
           marginTop: '20px',
         }}>
         <button
-          style={{
-            border: '1px solid #B5B5B5',
-            borderRadius: '10px',
-            cursor: 'pointer',
-            margin: '0 5px',
-            padding: '5px 10px',
-            background: 'white',
-          }}
+          className='button'
           disabled={currentlyPage === 0}
           onClick={() => setPage(currentlyPage - 1)}>
           {'<'}{' '}
@@ -38,31 +32,14 @@ const Pagination: FC<PaginationProps> = ({ totalPages, currentlyPage, setPage })
           }
           return (
             <button
-              style={{
-                border: '1px solid #B5B5B5',
-                borderRadius: '10px',
-                cursor: 'pointer',
-                margin: '0 5px',
-                padding: '5px 10px',
-                background: currentlyPage === page - 1 ? '#1890FF' : 'white',
-                color: currentlyPage === page - 1 ? 'white' : 'black',
-              }}
+              className={currentlyPage === page - 1 ? 'button-selected' : 'button'}
               key={number}
               onClick={() => setPage(page - 1)}>
               {page}
             </button>
           );
         })}
-        <button
-          style={{
-            border: '1px solid #B5B5B5',
-            borderRadius: '10px',
-            cursor: 'pointer',
-            margin: '0 5px',
-            padding: '5px 10px',
-            background: 'white',
-          }}
-          onClick={() => setPage(currentlyPage + 1)}>
+        <button className='button' onClick={() => setPage(currentlyPage + 1)}>
           {'>'}{' '}
         </button>
       </div>

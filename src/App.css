@@ -3,3 +3,10 @@
   margin: 0 auto;
   padding: 20px;
 }
+
+/* responsive */
+@media (max-width: 1200px) {
+  .container {
+    padding: 0;
+  }
+}

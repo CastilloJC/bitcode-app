@@ -1,0 +1,22 @@
+.button {
+  border: 1px solid #b5b5b5;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 0 2px;
+  padding: 5px 10px;
+  background: white;
+}
+
+.button:hover {
+  background: #b5b5b5;
+}
+
+.button-selected {
+  background: #1890ff;
+  color: white;
+  border: 1px solid #b5b5b5;
+  border-radius: 10px;
+  cursor: pointer;
+  /* margin: 0 5px; */
+  padding: 5px 10px;
+}

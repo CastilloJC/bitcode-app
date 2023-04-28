@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { OptionsButtons, Response } from '../../App';
-import ResultItem from './ResultItem';
+import ResultItem from './ResultItem/ResultItem';
+import './Results.css';
 
 interface ResultsProps {
   results: Response[];
@@ -8,18 +9,10 @@ interface ResultsProps {
 }
 const Results: FC<ResultsProps> = ({ results, option }) => {
   return (
-    <div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-          gridGap: '10px',
-          marginTop: '20px',
-        }}>
-        {results.map((result, id) => (
-          <ResultItem key={id} result={result} option={option} />
-        ))}
-      </div>
+    <div className='results-container'>
+      {results.map((result, id) => (
+        <ResultItem key={id} result={result} option={option} />
+      ))}
     </div>
   );
 };

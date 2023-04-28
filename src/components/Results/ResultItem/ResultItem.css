@@ -1,0 +1,21 @@
+.result-item {
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.result-item:hover {
+  opacity: 0.6;
+}
+
+.box-heart {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f4f4;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}

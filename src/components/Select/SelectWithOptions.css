@@ -5,6 +5,13 @@
   cursor: pointer;
   border-radius: 5px;
   padding-left: 20px;
+  margin-top: 20px;
+}
+/* responsive */
+@media (max-width: 768px) {
+  .container-select {
+    margin: 20px auto;
+  }
 }
 
 .select-option {
