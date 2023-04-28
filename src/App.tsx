@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import SwitchButton from './components/SwitchButton/SwitchButton';
@@ -26,46 +26,49 @@ function App() {
   const [results, setResults] = useState<Response[]>([]);
   const { state, dispatch } = useAppContext();
 
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `https://hn.algolia.com/api/v1/search_by_date?query=${selectedOption}&page=${page}&hitsPerPage=10`
+      );
+      const filteredResults = response.data.hits
+        .filter(
+          (result: Response) =>
+            result.author &&
+            result.created_at &&
+            result.story_title &&
+            result.story_url &&
+            result.objectID
+        )
+        .map((result: Response) => ({
+          author: result.author,
+          created_at: result.created_at,
+          story_title: result.story_title,
+          story_url: result.story_url,
+          objectID: result.objectID,
+        }));
+
+      setResults(filteredResults);
+      setTotalPages(response.data.nbPages);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [selectedOption, page]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `https://hn.algolia.com/api/v1/search_by_date?query=${selectedOption}&page=${page}&hitsPerPage=10`
-        );
-        const filteredResults = response.data.hits
-          .filter(
-            (result: Response) =>
-              result.author &&
-              result.created_at &&
-              result.story_title &&
-              result.story_url &&
-              result.objectID
-          )
-          .map((result: Response) => ({
-            author: result.author,
-            created_at: result.created_at,
-            story_title: result.story_title,
-            story_url: result.story_url,
-            objectID: result.objectID,
-          }));
-
-        setResults(filteredResults);
-
-        setTotalPages(response.data.nbPages);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     if (activeOption === 'My faves') {
       const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-      setResults(favorites);
+      const sortedFavorites = favorites.sort(
+        (a: Response, b: Response) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+      setResults(sortedFavorites);
     } else if (selectedOption !== '') {
       fetchData();
     } else {
       setResults([]);
     }
-  }, [selectedOption, page, activeOption]);
+  }, [selectedOption, page, activeOption, fetchData]);
 
   useLayoutEffect(() => {
     const storedOption = localStorage.getItem('selectedOption');
@@ -102,5 +105,4 @@ function App() {
     </>
   );
 }
-
 export default App;
