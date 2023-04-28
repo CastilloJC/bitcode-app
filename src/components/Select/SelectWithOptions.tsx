@@ -1,4 +1,5 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { FC, useLayoutEffect, useState } from 'react';
+import { OptionsToSelect } from '../../App';
 
 type Option = {
   value: string;
@@ -13,7 +14,10 @@ const options: Option[] = [
   { value: 'vuejs', label: 'Vuejs', imageUrl: '/icons/vuejs.png' },
 ];
 
-const SelectWithOptions = () => {
+interface SelectWithOptionsProps {
+  setOptionSelect: React.Dispatch<React.SetStateAction<OptionsToSelect>>;
+}
+const SelectWithOptions: FC<SelectWithOptionsProps> = ({ setOptionSelect }) => {
   const [selectedOption, setSelectedOption] = useState<Option>({
     value: '',
     label: '',
@@ -22,6 +26,7 @@ const SelectWithOptions = () => {
   const [showOptions, setShowOptions] = useState(false);
 
   const handleOptionSelect = (optionName: Option) => {
+    setOptionSelect(optionName.value as OptionsToSelect);
     setSelectedOption(optionName);
     localStorage.setItem('selectedOption', JSON.stringify(optionName));
     setShowOptions(false);

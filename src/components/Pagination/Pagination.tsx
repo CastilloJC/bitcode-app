@@ -1,13 +1,15 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 interface PaginationProps {
-  pageNumbers?: number;
-  setPageNumbers?: React.Dispatch<React.SetStateAction<number>>;
+  totalPages: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  currentlyPage: number;
 }
 
-const Pagination: FC<PaginationProps> = () => {
-  const [pageNumbers, setPageNumbers] = useState(5);
-
+const Pagination: FC<PaginationProps> = ({ totalPages, currentlyPage, setPage }) => {
+  const pageButtonsToShow = 10;
+  const firstPageToShow =
+    currentlyPage >= pageButtonsToShow ? currentlyPage - pageButtonsToShow + 1 : 0;
   return (
     <div>
       <div
@@ -16,21 +18,53 @@ const Pagination: FC<PaginationProps> = () => {
           justifyContent: 'center',
           marginTop: '20px',
         }}>
-        <button> {'<'} </button>
-        {Array.from(Array(pageNumbers).keys()).map(number => (
-          <button
-            style={{
-              border: '1px solid black',
-              borderRadius: '10px',
-              cursor: 'pointer',
-              margin: '0 5px',
-              padding: '5px 10px',
-            }}
-            key={number}>
-            {number + 1}
-          </button>
-        ))}
-        <button> {'>'} </button>
+        <button
+          style={{
+            border: '1px solid #B5B5B5',
+            borderRadius: '10px',
+            cursor: 'pointer',
+            margin: '0 5px',
+            padding: '5px 10px',
+            background: 'white',
+          }}
+          disabled={currentlyPage === 0}
+          onClick={() => setPage(currentlyPage - 1)}>
+          {'<'}{' '}
+        </button>
+        {Array.from(Array(pageButtonsToShow).keys()).map(number => {
+          const page = firstPageToShow + number + 1;
+          if (page > totalPages) {
+            return null;
+          }
+          return (
+            <button
+              style={{
+                border: '1px solid #B5B5B5',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                margin: '0 5px',
+                padding: '5px 10px',
+                background: currentlyPage === page - 1 ? '#1890FF' : 'white',
+                color: currentlyPage === page - 1 ? 'white' : 'black',
+              }}
+              key={number}
+              onClick={() => setPage(page - 1)}>
+              {page}
+            </button>
+          );
+        })}
+        <button
+          style={{
+            border: '1px solid #B5B5B5',
+            borderRadius: '10px',
+            cursor: 'pointer',
+            margin: '0 5px',
+            padding: '5px 10px',
+            background: 'white',
+          }}
+          onClick={() => setPage(currentlyPage + 1)}>
+          {'>'}{' '}
+        </button>
       </div>
     </div>
   );

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { FC } from 'react';
 import './SwitchButton.css';
 import ButtonElement from './ButtonElement/ButtonElement';
+import { OptionsButtons } from '../../App';
 
-export type OptionsButtons = 'All' | 'My faves';
-const SwitchButton = () => {
-  const [active, setActive] = useState<OptionsButtons>('All');
-
+interface PropsSwitchButton {
+  setActiveOption: (active: OptionsButtons) => void;
+  activeOption: OptionsButtons;
+}
+const SwitchButton: FC<PropsSwitchButton> = ({ activeOption, setActiveOption }) => {
   return (
     <div
       style={{
@@ -13,8 +15,8 @@ const SwitchButton = () => {
         justifyContent: 'center',
         marginTop: '20px',
       }}>
-      <ButtonElement title={'All'} active={active} setActive={setActive} />
-      <ButtonElement title={'My faves'} active={active} setActive={setActive} />
+      <ButtonElement title={'All'} active={activeOption} setActiveOption={setActiveOption} />
+      <ButtonElement title={'My faves'} active={activeOption} setActiveOption={setActiveOption} />
     </div>
   );
 };
