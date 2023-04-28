@@ -22,10 +22,13 @@ const ResultItem: FC<ResultItemProps> = ({ result, option }) => {
         type: 'DELETE_FAVORITE',
         payload: result,
       });
+      if (state.favorites.length === 1) {
+        console.log('entro');
+        localStorage.removeItem('favorites');
+      }
     }
 
     if (option === 'All' && !isFavorite) {
-      console.log('add');
       dispatch({
         type: 'ADD_FAVORITE',
         payload: result,
