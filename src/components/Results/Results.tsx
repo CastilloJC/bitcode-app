@@ -25,7 +25,7 @@ const Results: FC<ResultsProps> = ({ query }) => {
   const [results, setResults] = useState<Response[]>([]);
   const [favorite, setFavorite] = useState<boolean>(false);
 
-  const perPage = 20;
+  const perPage = 10;
 
   useEffect(() => {
     const fetchData = async () => {
