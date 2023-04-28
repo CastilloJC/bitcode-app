@@ -23,7 +23,6 @@ const ResultItem: FC<ResultItemProps> = ({ result, option }) => {
         payload: result,
       });
       if (state.favorites.length === 1) {
-        console.log('entro');
         localStorage.removeItem('favorites');
       }
     }
